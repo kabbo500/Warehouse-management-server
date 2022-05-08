@@ -21,12 +21,7 @@ async function run() {
         await client.connect();
         const serviceCollection = client.db('wireHouse').collection('service')
 
-        app.get('/service', async (req, res) => {
-            const query = {};
-            const cursor = serviceCollection.find(query);
-            const services = await cursor.toArray();
-            res.send(services);
-        })
+
 
         app.get('/service/:id', async (req, res) => {
             const id = req.params.id;
@@ -34,6 +29,15 @@ async function run() {
             const service = await serviceCollection.findOne(query);
             res.send(service);
         });
+
+        app.get('/service', async (req, res) => {
+            const email = req.query.email;
+
+            const query = { email: email };
+            const cursor = serviceCollection.find(query);
+            const services = await cursor.toArray();
+            res.send(services);
+        })
 
         //post
         app.post('/service', async (req, res) => {
